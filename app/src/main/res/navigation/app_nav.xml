@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/startScreen">
+
+    <fragment
+        android:id="@+id/startScreen"
+        android:name="com.shanmu.schedulemaker.StartScreen"
+        android:label="fragment_start_screen"
+        tools:layout="@layout/fragment_start_screen" >
+        <action
+            android:id="@+id/action_startScreen_to_getGoals2"
+            app:destination="@id/getGoals2" />
+    </fragment>
+    <fragment
+        android:id="@+id/getGoals2"
+        android:name="com.shanmu.schedulemaker.GetGoals"
+        android:label="fragment_get_goals"
+        tools:layout="@layout/fragment_get_goals" />
+</navigation>
