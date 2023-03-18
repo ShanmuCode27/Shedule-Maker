@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleMaker">
         <activity
+            android:name=".GetGoalsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
