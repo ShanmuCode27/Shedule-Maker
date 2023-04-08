@@ -2,8 +2,10 @@ package com.shanmu.schedulemaker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -38,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropScheduleTable);
     }
 
+    /* user table SQL implementations */
     public Boolean insertUser(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -47,6 +50,22 @@ public class DbHelper extends SQLiteOpenHelper {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public String retrieveUser() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("select username from user where id = " + 1, null);
+
+        if (result.moveToFirst()) {
+            Log.d("cursor returned baba ", result.getString(0));
+            String username = result.getString(0);
+            result.close();
+            db.close();
+            return username;
+        } else {
+            db.close();
+            return null;
         }
     }
 
@@ -69,10 +88,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
         long result = db.insert("userLocations", null, contentValues);
         if (result == -1) {
+            db.close();
             return false;
         } else {
+            db.close();
             return true;
         }
+
     }
 
     // table creation and drop script declarations

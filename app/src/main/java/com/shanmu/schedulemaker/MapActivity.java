@@ -2,13 +2,21 @@ package com.shanmu.schedulemaker;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,10 +31,11 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener {
 
     private static final int LOCATION_PERMISSION_CODE = 101;
     DbHelper dbHelper;
+    Toast toast;
 
     private GoogleMap gMap;
     private ActivityMapBinding binding;
@@ -60,9 +69,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 Address userAddress = addresses.get(0);
 
-                dbHelper = new DbHelper(this);
+//                Toast.makeText(this, "toas check", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Address captured successfully ", Toast.LENGTH_LONG).show();
 
-                String maxAdd = userAddress.getAddressLine(0);
+                dbHelper = new DbHelper(this);
 
                 Boolean insertResult = dbHelper.insertUserLocation(
                         1,
@@ -76,6 +86,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 } else {
                     Log.d("dbLocationInsert", "insertion failed");
                 }
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        startActivity(new Intent(getApplicationContext(), GetGoalsActivity.class));
+                    }
+                }, 3000);
 
 
             } catch (Exception e) {
@@ -112,5 +129,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 LOCATION_PERMISSION_CODE
         );
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
