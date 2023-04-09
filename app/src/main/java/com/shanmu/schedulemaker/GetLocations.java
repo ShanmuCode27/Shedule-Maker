@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class GetLocations extends AppCompatActivity implements SensorEventListener {
 
     private static final double SHAKE_THRESHOLD = 0.5;
-    private static final long MIN_TIME_BETWEEN_SHAKES_MILLISECS = 100;
+    private static final long MIN_TIME_BETWEEN_SHAKES_MILLISECS = 25;
     private Boolean isFirstShake = true;
     private long mLastShakeTime;
 
@@ -39,7 +39,7 @@ public class GetLocations extends AppCompatActivity implements SensorEventListen
             shakeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             isSensorAvailable = true;
             textView.setText("Sensor Available, Shake your phone to open maps");
-            proceedToMapBtn.setVisibility(View.GONE);
+            proceedToMapBtn.setVisibility(View.VISIBLE);
         } else {
             isSensorAvailable = false;
             textView.setText("Your mobile does not have the required sensor, Click the button below to enter your home address");

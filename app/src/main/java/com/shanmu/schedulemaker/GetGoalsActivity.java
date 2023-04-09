@@ -4,26 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.media.Image;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 
+import com.shanmu.schedulemaker.utils.DateUtils;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GetGoalsActivity extends AppCompatActivity {
 
+    private static int goalCounter = 0;
+
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+    private EditText goalInput;
+    private Button createGoalInputBtn;
+    private Button submitCreatedGoalsBtn;
+    String userGoal;
 
     final Calendar c = Calendar.getInstance();
     int year = c.get(Calendar.YEAR);
     int month = c.get(Calendar.MONTH);
     int day = c.get(Calendar.DAY_OF_MONTH);
+
+    ArrayList<String> listOfGoals = new ArrayList<>();
+    ArrayAdapter<String> listAdapter;
+    ListView goalListView;
 
 
     int style = AlertDialog.THEME_HOLO_LIGHT;
@@ -34,6 +47,11 @@ public class GetGoalsActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month = month + 1;
             String date = makeDateString(day, month, year);
+            String dateInput = DateUtils.getDateOnlyFromIntValues(year,month,day);
+
+            String goal = goalInput.getText().toString();
+            userGoal = goal + date;
+            Log.d("current goalwhoo ", userGoal);
             dateButton.setText(date);
         }
     };
@@ -44,6 +62,9 @@ public class GetGoalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_goals);
 
         dateButton = findViewById(R.id.deadline_select);
+        goalInput = findViewById(R.id.goal_input);
+        createGoalInputBtn = findViewById(R.id.createGoalInputBtn);
+        submitCreatedGoalsBtn = findViewById(R.id.submitInputedGoalsBtn);
 
         datePickerDialog = new DatePickerDialog(this, dateSetListener, year, month, day);
         dateButton.setText(getTodaysDate());
@@ -53,6 +74,26 @@ public class GetGoalsActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+        createGoalInputBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addGoalItems(userGoal);
+            }
+        });
+
+        listAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                listOfGoals
+        );
+        goalListView = (ListView) findViewById(R.id.listOfGoalsInput);
+        goalListView.setAdapter(listAdapter);
+    }
+
+    public void addGoalItems(String userGoal) {
+        listOfGoals.add(userGoal);
+        listAdapter.notifyDataSetChanged();
     }
 
     private String getMonthFormat(int month)

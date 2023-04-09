@@ -64,12 +64,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 latitude = gpsLocation.getLatitude();
                 longitude = gpsLocation.getLongitude();
 
-                Log.d("lat and long baby ", " lat " + latitude + " long " + longitude);
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 Address userAddress = addresses.get(0);
 
-//                Toast.makeText(this, "toas check", Toast.LENGTH_SHORT);
                 Toast.makeText(this, "Address captured successfully ", Toast.LENGTH_LONG).show();
 
                 dbHelper = new DbHelper(this);
