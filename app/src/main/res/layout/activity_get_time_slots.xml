@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GetTimeSlots">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/gettimeslot_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="Enter your available time slots " />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_monday"
+                    android:text="Monday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_monday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_monday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_monday_tp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_monday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_tuesday"
+                    android:text="Tuesday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_tuesday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_tuesday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_tuesday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_tuesday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view3"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_wednesday"
+                    android:text="Wednesday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_wednesday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_wednesday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_wednesday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_wednesday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view4"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_thursday"
+                    android:text="Thursday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_thursday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_thursday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_thursday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_thursday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view5"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_friday"
+                    android:text="Friday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_friday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_friday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_friday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_friday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view6"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_saturday"
+                    android:text="Saturday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_saturday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_saturday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_saturday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_saturday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view7"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/gettimeslot_sunday"
+                    android:text="Sunday"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_sunday_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="20dp"
+                    android:paddingTop="50dp"
+                    android:text="From"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_sunday_from_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Select Time" />
+
+
+                <TextView
+                    android:id="@+id/gettimeslot_sunday_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="150dp"
+                    android:paddingTop="50dp"
+                    android:gravity="end"
+                    android:text="To"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/gettimeslot_sunday_to_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="200dp"
+                    android:text="Select Time" />
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <Button
+                android:id="@+id/gettimeslot_submit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="30dp"
+                android:text="Create Schedule" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

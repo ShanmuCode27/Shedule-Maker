@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +51,7 @@ public class GetGoalsActivity extends AppCompatActivity {
             String dateInput = DateUtils.getDateOnlyFromIntValues(year,month,day);
 
             String goal = goalInput.getText().toString();
-            userGoal = goal + date;
+            userGoal = goal + " :  before  - " + date;
             Log.d("current goalwhoo ", userGoal);
             dateButton.setText(date);
         }
@@ -79,6 +80,8 @@ public class GetGoalsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addGoalItems(userGoal);
+                goalInput.setText("");
+                dateButton.setText(getTodaysDate());
             }
         });
 
@@ -89,6 +92,22 @@ public class GetGoalsActivity extends AppCompatActivity {
         );
         goalListView = (ListView) findViewById(R.id.listOfGoalsInput);
         goalListView.setAdapter(listAdapter);
+
+        submitCreatedGoalsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveToGetTimeSlotScreen();
+            }
+        });
+
+    }
+
+    private void moveToGetTimeSlotScreen() {
+        for (String item: listOfGoals) {
+            Log.d("All the goals ", DateUtils.convertStringDateToIntDate(item.split("-")[1]));
+        }
+        Intent moveToNextScreen = new Intent(getApplicationContext(), GetTimeSlots.class);
+        startActivity(moveToNextScreen);
     }
 
     public void addGoalItems(String userGoal) {

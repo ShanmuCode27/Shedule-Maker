@@ -39,7 +39,7 @@ public class GetLocations extends AppCompatActivity implements SensorEventListen
             shakeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             isSensorAvailable = true;
             textView.setText("Sensor Available, Shake your phone to open maps");
-            proceedToMapBtn.setVisibility(View.VISIBLE);
+            proceedToMapBtn.setVisibility(View.GONE);
         } else {
             isSensorAvailable = false;
             textView.setText("Your mobile does not have the required sensor, Click the button below to enter your home address");

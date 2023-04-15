@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleMaker">
         <activity
+            android:name=".GetTimeSlots"
+            android:exported="false" />
+        <activity
             android:name=".MapActivity"
             android:exported="false" />
         <activity
