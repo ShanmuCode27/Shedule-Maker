@@ -21,8 +21,8 @@ public class DateUtils {
         String month = date.substring(0, 4);
         String year = date.substring(date.length() - 4);
         String day = date.substring(4, date.length() - 4).trim();
-        Log.d("convertest","month : " + month + " day " + day + " year " + year); //for db store
-        return "";
+        String combinedDate = year.trim() + getMonthNumberFromString(month.trim()) + day.trim();
+        return combinedDate;
     }
 
     public static String getIntOnlyFromTime(int hours, int minutes) {
@@ -55,6 +55,65 @@ public class DateUtils {
             return sHours + ":" + sMinutes + " pm";
         }
         return sHours + ":" + sMinutes + " am";
+    }
+
+    public static String getMonthNumberFromString(String month) {
+        String intMonth;
+        switch (month) {
+            case "JAN":
+                intMonth = "01";
+                break;
+
+            case "FEB":
+                intMonth = "02";
+                break;
+
+            case "MAR":
+                intMonth = "03";
+                break;
+
+            case "APR":
+                intMonth = "04";
+                break;
+
+            case "MAY":
+                intMonth = "05";
+                break;
+
+            case "JUN":
+                intMonth = "06";
+                break;
+
+            case "JUL":
+                intMonth = "07";
+                break;
+
+            case "AUG":
+                intMonth = "08";
+                break;
+
+            case "SEP":
+                intMonth = "09";
+                break;
+
+            case "OCT":
+                intMonth ="10";
+                break;
+
+            case "NOV":
+                intMonth = "11";
+                break;
+
+            case "DEC":
+                intMonth = "12";
+                break;
+
+            default:
+                intMonth = "01";
+                break;
+        }
+
+        return intMonth;
     }
 
 }

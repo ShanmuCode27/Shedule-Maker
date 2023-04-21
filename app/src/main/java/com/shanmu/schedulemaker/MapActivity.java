@@ -85,16 +85,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     Log.d("dbLocationInsert", "insertion failed");
                 }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
                 new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         startActivity(new Intent(getApplicationContext(), GetGoalsActivity.class));
                     }
                 }, 3000);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
         } else {

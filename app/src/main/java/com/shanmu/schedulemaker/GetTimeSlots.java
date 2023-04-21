@@ -3,16 +3,20 @@ package com.shanmu.schedulemaker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+import com.shanmu.schedulemaker.models.GoalAndDeadline;
 import com.shanmu.schedulemaker.utils.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class GetTimeSlots extends AppCompatActivity {
 
@@ -36,6 +40,11 @@ public class GetTimeSlots extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_time_slots);
+
+        ArrayList<GoalAndDeadline> listOfGoalAndDeadline = (ArrayList<GoalAndDeadline>) getIntent().getSerializableExtra("goalAndDeadline");
+        for (GoalAndDeadline goal: listOfGoalAndDeadline) {
+            Log.d("htis", goal.getGoal() + "**" + goal.getDeadline());
+        }
 
         mondayFromBtn = findViewById(R.id.gettimeslot_monday_from_btn);
         mondayToBtn = findViewById(R.id.gettimeslot_monday_to_btn);
@@ -215,7 +224,7 @@ public class GetTimeSlots extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //move to next intent
+                startActivity(new Intent(getApplicationContext(), ComputeSchedule.class));
             }
         });
     }

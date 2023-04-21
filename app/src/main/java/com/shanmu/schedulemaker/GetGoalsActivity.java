@@ -14,10 +14,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.shanmu.schedulemaker.models.GoalAndDeadline;
 import com.shanmu.schedulemaker.utils.DateUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class GetGoalsActivity extends AppCompatActivity {
 
@@ -52,7 +55,6 @@ public class GetGoalsActivity extends AppCompatActivity {
 
             String goal = goalInput.getText().toString();
             userGoal = goal + " :  before  - " + date;
-            Log.d("current goalwhoo ", userGoal);
             dateButton.setText(date);
         }
     };
@@ -103,10 +105,16 @@ public class GetGoalsActivity extends AppCompatActivity {
     }
 
     private void moveToGetTimeSlotScreen() {
-        for (String item: listOfGoals) {
-            Log.d("All the goals ", DateUtils.convertStringDateToIntDate(item.split("-")[1]));
-        }
         Intent moveToNextScreen = new Intent(getApplicationContext(), GetTimeSlots.class);
+        int count = 0;
+        ArrayList<GoalAndDeadline> listOfGoalAndDeadline = new ArrayList<>();
+        for (String item: listOfGoals) {
+            GoalAndDeadline goalAndDeadline = new GoalAndDeadline(item.split(" :  before  - ")[0], DateUtils.convertStringDateToIntDate(item.split(" :  before  - ")[1]));
+            listOfGoalAndDeadline.add(goalAndDeadline);
+            count++;
+        }
+        moveToNextScreen.putExtra("listOfGoalAndDeadline" + count, (Serializable) listOfGoalAndDeadline);
+
         startActivity(moveToNextScreen);
     }
 
