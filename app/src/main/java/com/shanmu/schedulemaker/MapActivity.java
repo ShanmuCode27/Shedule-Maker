@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int LOCATION_PERMISSION_CODE = 101;
     DbHelper dbHelper;
@@ -129,13 +129,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         );
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
 }
