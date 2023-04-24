@@ -1,8 +1,9 @@
 package com.shanmu.schedulemaker.models;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class GoalAndDeadline implements Serializable {
+public class GoalAndDeadline implements Parcelable {
 
     private String goal;
     private String deadline;
@@ -10,6 +11,11 @@ public class GoalAndDeadline implements Serializable {
     public GoalAndDeadline(String goal, String deadline) {
         this.goal = goal;
         this.deadline = deadline;
+    }
+
+    public GoalAndDeadline(Parcel in) {
+        goal = in.readString();
+        deadline = in.readString();
     }
 
     public String getGoal() {
@@ -28,4 +34,26 @@ public class GoalAndDeadline implements Serializable {
         this.deadline = deadline;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(goal);
+        parcel.writeString(deadline);
+    }
+
+    public static final Parcelable.Creator<GoalAndDeadline> CREATOR = new Parcelable.Creator<GoalAndDeadline>()
+    {
+        public GoalAndDeadline createFromParcel(Parcel in)
+        {
+            return new GoalAndDeadline(in);
+        }
+        public GoalAndDeadline[] newArray(int size)
+        {
+            return new GoalAndDeadline[size];
+        }
+    };
 }

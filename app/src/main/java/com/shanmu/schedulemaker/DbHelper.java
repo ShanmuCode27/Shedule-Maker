@@ -41,10 +41,12 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     /* user table SQL implementations */
-    public Boolean insertUser(String username) {
+    public Boolean insertUser(String username, String role, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", username);
+        contentValues.put("role", role);
+        contentValues.put("password", password);
         long result = db.insert("user", null, contentValues);
         if (result == -1) {
             return false;
@@ -53,12 +55,23 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Boolean loginUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("select username, password from user where username = " + username, null);
+
+        if (result.moveToFirst()) {
+            Log.d("logintest ", result.getString(0));
+        }
+        db.close();
+
+        return false;
+    }
+
     public String retrieveUser() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor result = db.rawQuery("select username from user where id = " + 1, null);
 
         if (result.moveToFirst()) {
-            Log.d("cursor returned baba ", result.getString(0));
             String username = result.getString(0);
             result.close();
             db.close();
@@ -99,7 +112,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
     // table creation and drop script declarations
 
-    private final static String createUsertable = "CREATE TABLE user(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT)";
+    private final static String createUsertable = "CREATE TABLE user(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "username TEXT," +
+            "role TEXT," +
+            "password TEXT)";
     private final static String dropUserTable = "DROP TABLE IF EXISTS user";
 
 

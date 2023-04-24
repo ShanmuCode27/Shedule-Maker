@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleMaker">
         <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ComputeSchedule"
             android:exported="false" />
         <activity

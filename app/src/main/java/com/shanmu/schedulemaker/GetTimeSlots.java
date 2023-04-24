@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+import com.shanmu.schedulemaker.models.DayAndTimeSlot;
 import com.shanmu.schedulemaker.models.GoalAndDeadline;
 import com.shanmu.schedulemaker.utils.DateUtils;
 
@@ -31,6 +34,10 @@ public class GetTimeSlots extends AppCompatActivity {
     Button thursdayFromBtn, thursdayToBtn, fridayFromBtn, fridayToBtn, saturdayFromBtn, saturdayToBtn;
     Button sundayFromBtn, sundayToBtn;
     Button submitBtn;
+    ArrayList<GoalAndDeadline> listOfGoalAndDeadline;
+    ArrayList<DayAndTimeSlot> listOfDayAndTimeSlot;
+
+    DayAndTimeSlot mondayTimeSlot, tuesdayTimeSlot, wednesdayTimeSlot, thursdayTimeSlot, fridayTimeSlot, saturdayTimeSlot, sundayTimeSlot;
 
     final Date c = Calendar.getInstance().getTime();
     int hours = c.getHours();
@@ -41,10 +48,15 @@ public class GetTimeSlots extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_time_slots);
 
-        ArrayList<GoalAndDeadline> listOfGoalAndDeadline = (ArrayList<GoalAndDeadline>) getIntent().getSerializableExtra("goalAndDeadline");
-        for (GoalAndDeadline goal: listOfGoalAndDeadline) {
-            Log.d("htis", goal.getGoal() + "**" + goal.getDeadline());
-        }
+        listOfGoalAndDeadline  = this.getIntent().getParcelableArrayListExtra("listOfGoalAndDeadline");
+
+        mondayTimeSlot = new DayAndTimeSlot("mon");
+        tuesdayTimeSlot = new DayAndTimeSlot("tue");
+        wednesdayTimeSlot = new DayAndTimeSlot("wed");
+        thursdayTimeSlot = new DayAndTimeSlot("thu");
+        fridayTimeSlot = new DayAndTimeSlot("fri");
+        saturdayTimeSlot = new DayAndTimeSlot("sat");
+        sundayTimeSlot = new DayAndTimeSlot("sun");
 
         mondayFromBtn = findViewById(R.id.gettimeslot_monday_from_btn);
         mondayToBtn = findViewById(R.id.gettimeslot_monday_to_btn);
@@ -91,6 +103,8 @@ public class GetTimeSlots extends AppCompatActivity {
         saturdaySelectToTime();
         sundaySelectFromTime();
         sundaySelectToTime();
+        submitTimeSlots();
+
     }
 
     private void mondaySelectFromTime() {
@@ -224,7 +238,11 @@ public class GetTimeSlots extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ComputeSchedule.class));
+                Intent moveToNextScreen = new Intent(getApplicationContext(), ComputeSchedule.class);
+                moveToNextScreen.putParcelableArrayListExtra("listOfGoalAndDeadline", listOfGoalAndDeadline);
+                moveToNextScreen.putParcelableArrayListExtra("listOfDayAndTimeSlot", listOfDayAndTimeSlot);
+
+                startActivity(moveToNextScreen);
             }
         });
     }
@@ -235,6 +253,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             mondayFromBtn.setText(singleTime);
+            mondayTimeSlot.setTimeslot(time);
+            Log.d("timers", time);
         }
     };
 
@@ -244,6 +264,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             mondayToBtn.setText(singleTime);
+            mondayTimeSlot.setTimeslot(mondayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(mondayTimeSlot);
         }
     };
 
@@ -254,6 +276,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             tuesdayFromBtn.setText(singleTime);
+            tuesdayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -263,6 +286,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             tuesdayToBtn.setText(singleTime);
+            tuesdayTimeSlot.setTimeslot(tuesdayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(tuesdayTimeSlot);
         }
     };
 
@@ -273,6 +298,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             wednesdayFromBtn.setText(singleTime);
+            wednesdayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -282,6 +308,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             wednesdayToBtn.setText(singleTime);
+            wednesdayTimeSlot.setTimeslot(wednesdayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(wednesdayTimeSlot);
         }
     };
 
@@ -292,6 +320,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             thursdayFromBtn.setText(singleTime);
+            thursdayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -301,6 +330,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             thursdayToBtn.setText(singleTime);
+            thursdayTimeSlot.setTimeslot(thursdayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(thursdayTimeSlot);
         }
     };
 
@@ -310,6 +341,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             fridayFromBtn.setText(singleTime);
+            fridayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -319,6 +351,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             fridayToBtn.setText(singleTime);
+            fridayTimeSlot.setTimeslot(fridayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(fridayTimeSlot);
         }
     };
 
@@ -328,6 +362,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             saturdayFromBtn.setText(singleTime);
+            saturdayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -337,6 +372,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             saturdayToBtn.setText(singleTime);
+            saturdayTimeSlot.setTimeslot(saturdayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(saturdayTimeSlot);
         }
     };
 
@@ -346,6 +383,7 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             sundayFromBtn.setText(singleTime);
+            sundayTimeSlot.setTimeslot(time);
         }
     };
 
@@ -355,6 +393,8 @@ public class GetTimeSlots extends AppCompatActivity {
             String time = DateUtils.getIntOnlyFromTime(hourOfDay, minute);
             String singleTime = DateUtils.convertTo12HourFormat(time);
             sundayToBtn.setText(singleTime);
+            sundayTimeSlot.setTimeslot(sundayTimeSlot.getTimeslot() + "-" + time);
+            listOfDayAndTimeSlot.add(sundayTimeSlot);
         }
     };
 }
