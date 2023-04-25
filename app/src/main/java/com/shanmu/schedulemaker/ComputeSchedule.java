@@ -7,17 +7,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.shanmu.schedulemaker.models.DayAndTimeAvailable;
 import com.shanmu.schedulemaker.models.DayAndTimeSlot;
 import com.shanmu.schedulemaker.models.GoalAndDeadline;
 import com.shanmu.schedulemaker.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class ComputeSchedule extends AppCompatActivity {
 
     ArrayList<GoalAndDeadline> listOfGoalAndDeadline;
     ArrayList<DayAndTimeSlot> listOfDayAndTimeSlot;
+    ArrayList<DayAndTimeAvailable> listOfAvailableTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +29,21 @@ public class ComputeSchedule extends AppCompatActivity {
 
         listOfGoalAndDeadline = this.getIntent().getParcelableArrayListExtra("listOfGoalAndDeadline");
         listOfDayAndTimeSlot = this.getIntent().getParcelableArrayListExtra("listOfDayAndTimeSlot");
+        listOfAvailableTime = new ArrayList<>();
 
         String todayDate = getFormattedDate(DateUtils.getTodaysDate());
 
+        for (DayAndTimeSlot item: listOfDayAndTimeSlot) {
+            String timeSlot = item.getTimeslot();
+            Long timeAvailable = DateUtils.getDifferenceBetweenTwoTimes(timeSlot.split("-")[0], timeSlot.split("-")[1]);
 
-        new Handler().postDelayed(new Runnable() {
+            DayAndTimeAvailable dayAndTimeAvailable = new DayAndTimeAvailable(item.getDay(), timeAvailable);
+            listOfAvailableTime.add(dayAndTimeAvailable);
+        }
 
-            public void run() {
-                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
-            }
-        }, 2000);
+        for (DayAndTimeAvailable item: listOfAvailableTime) {
+            Log.d("intime", item.getDay() + " --- " + item.getTimeAvailable());
+        }
 
     }
 

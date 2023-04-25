@@ -7,15 +7,18 @@ public class GoalAndDeadline implements Parcelable {
 
     private String goal;
     private String deadline;
+    private Integer estimatedHours;
 
-    public GoalAndDeadline(String goal, String deadline) {
+    public GoalAndDeadline(String goal, String deadline, Integer estimatedHours) {
         this.goal = goal;
         this.deadline = deadline;
+        this.estimatedHours = estimatedHours;
     }
 
     public GoalAndDeadline(Parcel in) {
         goal = in.readString();
         deadline = in.readString();
+        estimatedHours = in.readInt();
     }
 
     public String getGoal() {
@@ -34,6 +37,14 @@ public class GoalAndDeadline implements Parcelable {
         this.deadline = deadline;
     }
 
+    public void setEstimatedHours(Integer estimatedHours) {
+        this.estimatedHours = estimatedHours;
+    }
+
+    public Integer getEstimatedHours() {
+        return estimatedHours;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -43,6 +54,7 @@ public class GoalAndDeadline implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(goal);
         parcel.writeString(deadline);
+        parcel.writeInt(estimatedHours);
     }
 
     public static final Parcelable.Creator<GoalAndDeadline> CREATOR = new Parcelable.Creator<GoalAndDeadline>()

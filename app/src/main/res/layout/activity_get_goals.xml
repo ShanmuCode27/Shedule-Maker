@@ -28,7 +28,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="292dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="50dp">
@@ -49,10 +49,18 @@
                 android:inputType="text" />
 
             <TextView
-                android:id="@+id/deadline"
+                android:id="@+id/goal_estimation_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
+                android:text="Estimated hours required"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
                 android:text="Deadline: "
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="@+id/goal_input"
@@ -67,13 +75,21 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="49dp"
-                android:layout_marginTop="144dp"
-                android:layout_marginEnd="65dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="244dp"
+                android:layout_marginEnd="70dp"
                 android:text="Pick Date"
                 app:layout_constraintBottom_toBottomOf="@+id/deadline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/goal_estimation_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="135dp"
+                android:ems="10"
+                android:inputType="number" />
 
         </RelativeLayout>
 

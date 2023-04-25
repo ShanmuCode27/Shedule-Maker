@@ -57,10 +57,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public Boolean loginUser(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("select username, password from user where username = " + username, null);
+        String[] selectionArgs = new String[]{ username };
+        Cursor result = db.rawQuery("select username, password from user where username = ?", selectionArgs);
 
         if (result.moveToFirst()) {
-            Log.d("logintest ", result.getString(0));
+            if (result.getString(1).equals(password) && result.getString(0).equals(username)) {
+                return true;
+            }
         }
         db.close();
 

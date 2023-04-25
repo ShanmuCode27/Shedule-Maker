@@ -48,6 +48,7 @@ public class GetTimeSlots extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_time_slots);
 
+        listOfDayAndTimeSlot = new ArrayList<>();
         listOfGoalAndDeadline  = this.getIntent().getParcelableArrayListExtra("listOfGoalAndDeadline");
 
         mondayTimeSlot = new DayAndTimeSlot("mon");
@@ -254,7 +255,6 @@ public class GetTimeSlots extends AppCompatActivity {
             String singleTime = DateUtils.convertTo12HourFormat(time);
             mondayFromBtn.setText(singleTime);
             mondayTimeSlot.setTimeslot(time);
-            Log.d("timers", time);
         }
     };
 

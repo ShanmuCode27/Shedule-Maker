@@ -23,6 +23,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GetGoalsActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class GetGoalsActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
     private EditText goalInput;
+    private EditText estimationInput;
     private Button createGoalInputBtn;
     private Button submitCreatedGoalsBtn;
     String userGoal;
@@ -54,9 +57,9 @@ public class GetGoalsActivity extends AppCompatActivity {
             month = month + 1;
             String date = DateUtils.makeDateString(day, month, year);
             String dateInput = DateUtils.getDateOnlyFromIntValues(year,month,day);
-
+            String estimatedHours = estimationInput.getText().toString() + "hrs";
             String goal = goalInput.getText().toString();
-            userGoal = goal + " :  before  - " + date;
+            userGoal = goal + " :  before  - " + date + " with " + estimatedHours;
             dateButton.setText(date);
         }
     };
@@ -68,6 +71,7 @@ public class GetGoalsActivity extends AppCompatActivity {
 
         dateButton = findViewById(R.id.deadline_select);
         goalInput = findViewById(R.id.goal_input);
+        estimationInput = findViewById(R.id.goal_estimation_input);
         createGoalInputBtn = findViewById(R.id.createGoalInputBtn);
         submitCreatedGoalsBtn = findViewById(R.id.submitInputedGoalsBtn);
 
@@ -113,7 +117,15 @@ public class GetGoalsActivity extends AppCompatActivity {
         ArrayList<GoalAndDeadline> listOfGoalAndDeadline = new ArrayList<>();
 
         for (String item: listOfGoals) {
-            GoalAndDeadline goalAndDeadline = new GoalAndDeadline(item.split(" :  before  - ")[0], DateUtils.convertStringDateToIntDate(item.split(" :  before  - ")[1]));
+
+//            Pattern regex = Pattern.compile("(?<= with ).*(?=hrs)");
+//            Matcher matcher = regex.matcher(item);
+//            Log.d("matcher ", matcher.group());
+
+            String estimatedHours = item.split(" with ")[1].split("hrs")[0].trim();
+
+
+            GoalAndDeadline goalAndDeadline = new GoalAndDeadline(item.split(" :  before  - ")[0], DateUtils.convertStringDateToIntDate(item.split(" :  before  - ")[1]), Integer.parseInt(estimatedHours));
             listOfGoalAndDeadline.add(goalAndDeadline);
             count++;
         }

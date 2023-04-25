@@ -2,7 +2,10 @@ package com.shanmu.schedulemaker.utils;
 
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtils {
 
@@ -164,6 +167,25 @@ public class DateUtils {
         month = month + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
         return DateUtils.makeDateString(day, month, year);
+    }
+
+    public static Long getDifferenceBetweenTwoTimes(String time1, String time2) {
+        String formattedTime1 = time1.substring(0,2) + ":" + time1.substring(2, time1.length()) + ":00";
+        String formattedTime2 = time2.substring(0,2) + ":" + time1.substring(2, time1.length()) + ":00";
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+        try {
+            Date date1 = format.parse(formattedTime1);
+            Date date2 = format.parse(formattedTime2);
+            long difference = date2.getTime() - date1.getTime();
+
+            return difference;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
 }
