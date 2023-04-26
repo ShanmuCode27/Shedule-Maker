@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                         }, 2000);
 
                     } else {
+                        Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT);
                         Log.d("loginfailed", "login failed");
                     }
                 }

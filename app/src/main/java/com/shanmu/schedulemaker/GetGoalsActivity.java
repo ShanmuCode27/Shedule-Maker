@@ -89,6 +89,7 @@ public class GetGoalsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 addGoalItems(userGoal);
                 goalInput.setText("");
+                estimationInput.setText("");
                 dateButton.setText(DateUtils.getTodaysDate());
             }
         });
@@ -118,14 +119,10 @@ public class GetGoalsActivity extends AppCompatActivity {
 
         for (String item: listOfGoals) {
 
-//            Pattern regex = Pattern.compile("(?<= with ).*(?=hrs)");
-//            Matcher matcher = regex.matcher(item);
-//            Log.d("matcher ", matcher.group());
-
             String estimatedHours = item.split(" with ")[1].split("hrs")[0].trim();
+            String dateInFormat = DateUtils.convertStringDateToIntDate(item.split(" :  before  - ")[1].split(" with")[0]);
 
-
-            GoalAndDeadline goalAndDeadline = new GoalAndDeadline(item.split(" :  before  - ")[0], DateUtils.convertStringDateToIntDate(item.split(" :  before  - ")[1]), Integer.parseInt(estimatedHours));
+            GoalAndDeadline goalAndDeadline = new GoalAndDeadline(item.split(" :  before  - ")[0], dateInFormat, Integer.parseInt(estimatedHours));
             listOfGoalAndDeadline.add(goalAndDeadline);
             count++;
         }

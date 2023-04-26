@@ -30,6 +30,17 @@ public class DateUtils {
         return combinedDate;
     }
 
+    public static Date convertIntDateToDateFormat(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddd");
+        try {
+            Date convertedDate = format.parse(date);
+            return convertedDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String getIntOnlyFromTime(int hours, int minutes) {
 
         String sHours = String.valueOf(hours);
@@ -178,14 +189,46 @@ public class DateUtils {
             Date date1 = format.parse(formattedTime1);
             Date date2 = format.parse(formattedTime2);
             long difference = date2.getTime() - date1.getTime();
+            long minutes = (difference / 1000) / 60;
 
-            return difference;
+            return minutes;
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
 
+    public static String dayFromCalendarDayIndex(int dayIndex) {
+        String day;
+        Log.d("methodreceived ", "the index fo " + dayIndex);
+        switch (dayIndex) {
+            case 1:
+                day = "sun";
+                break;
+            case 2:
+                day = "mon";
+                break;
+            case 3:
+                day = "tue";
+                break;
+            case 4:
+                day = "wed";
+                break;
+            case 5:
+                day = "thu";
+                break;
+            case 6:
+                day = "fri";
+                break;
+            case 7:
+                day = "sat";
+                break;
+            default:
+                day = "sun";
+        }
+
+        return day;
     }
 
 }
