@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScheduleComputeErrorActivity">
+
+    <TextView
+        android:id="@+id/schedule_computer_error_sorry_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="190dp"
+        android:layout_marginBottom="33dp"
+        android:text="Sorry"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_computer_error_desc_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/schedule_computer_error_desc_text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="106dp"
+        android:layout_marginBottom="53dp"
+        android:gravity="center"
+        android:text="Your given timeslots are not sufficient to work on your goals"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_computer_error_solution_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_error_sorry_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_error_solution_text"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="96dp"
+        android:gravity="center"
+        android:text="Consider adding more time or updating goals"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_error_desc_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_time_required_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginBottom="69dp"
+        android:text="Time required"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_computer_time_required_change"
+        app:layout_constraintEnd_toStartOf="@+id/schedule_computer_time_available_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_error_solution_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_time_available_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="69dp"
+        android:text="Time provided"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_computer_time_provided_change"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/schedule_computer_time_required_text"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_error_solution_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_time_required_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Difference in time"
+        app:layout_constraintEnd_toStartOf="@+id/schedule_computer_time_provided_change"
+        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_time_required_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_time_provided_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Difference in time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_time_available_text" />
+
+    <TextView
+        android:id="@+id/schedule_computer_difference_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginBottom="51dp"
+        android:text="Difference in time"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_computer_difference_change"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_computer_time_required_change" />
+
+    <TextView
+        android:id="@+id/schedule_computer_difference_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.848" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

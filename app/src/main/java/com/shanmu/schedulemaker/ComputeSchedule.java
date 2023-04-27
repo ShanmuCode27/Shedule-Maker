@@ -32,6 +32,7 @@ public class ComputeSchedule extends AppCompatActivity {
     ArrayList<DayAndTimeSlot> listOfDayAndTimeSlot;
     ArrayList<DayAndTimeAvailable> listOfAvailableTime;
     ArrayList<DayWithTask> listOfDayWithTask;
+    ArrayList<GoalAndDeadline> timeSlotAddedGoalAndDealine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +61,72 @@ public class ComputeSchedule extends AppCompatActivity {
 
     public void createShedule() {
 
-        Long availableMinutes = null;
         createDaysWithTask();
+        Long totalTimeAvailable = getTotalTimeAvailableInSchedule();
+        Long totalTimeRequired = getTotalTimeRequired();
+
+
+        if (totalTimeRequired.intValue() > totalTimeAvailable.intValue()) {
+            // MOVE TO NEXT SCREEN WITH ERROR
+
+            Intent moveToErrorDisplay = new Intent(getApplicationContext(), ScheduleComputeErrorActivity.class);
+            moveToErrorDisplay.putExtra("time-required", String.valueOf(totalTimeRequired) + " minutes");
+            moveToErrorDisplay.putExtra("time-provided", String.valueOf(totalTimeAvailable) + "minutes");
+            moveToErrorDisplay.putExtra("difference", String.valueOf(totalTimeRequired.intValue() - totalTimeAvailable.intValue()) + " minutes");
+            startActivity(moveToErrorDisplay);
+        }
+
+    }
+
+    public void createTaskSlots() {
+
+        for (DayWithTask item: listOfDayWithTask) {
+            GoalAndDeadline currentTargetedGoalAndDeadline;
+
+            for (int i = 0; i < listOfGoalAndDeadline.size(); i++) {
+                if (!timeSlotAddedGoalAndDealine.contains(listOfGoalAndDeadline.get(i))) {
+                    currentTargetedGoalAndDeadline = listOfGoalAndDeadline.get(i);
+                    break;
+                }
+            }
+
+            DayAndTimeSlot dayAndTimeSlot;
+            for (DayAndTimeSlot dtSlot: listOfDayAndTimeSlot) {
+                if (dtSlot.getDay().equals(item.getDay())) {
+                    dayAndTimeSlot = dtSlot;
+                }
+            }
+
+            //TODO from here
+
+        }
+    }
+
+
+
+    public Long getTotalTimeRequired() {
+
+        Long totalTimeRequired = 0L;
+
+        for (GoalAndDeadline item: listOfGoalAndDeadline) {
+            totalTimeRequired += (long) (item.getEstimatedHours() * 60);
+        }
+
+        return totalTimeRequired;
+    }
+
+    public Long getTotalTimeAvailableInSchedule() {
+        Long availableMinutes = 0L;
 
         for (DayWithTask item: listOfDayWithTask) {
             for (DayAndTimeAvailable dayAndTimeAvailable: listOfAvailableTime) {
-                Log.d("checkavail", dayAndTimeAvailable.getDay() + " : " + item.getDay());
                 if (dayAndTimeAvailable.getDay().equals(item.getDay())) {
-                    Log.d("insideavail", "time is " + dayAndTimeAvailable.getTimeAvailable());
                     availableMinutes += dayAndTimeAvailable.getTimeAvailable();
                 }
             }
         }
 
-        Log.d("availtime", "time is " + availableMinutes);
-
-//        for (int i = 0; i < listOfGoalAndDeadline.size(); i++) {
-//            int differenceInDays = differentBetweenDays(currentDate, listOfGoalAndDeadline.get(i).getDeadline());
-//
-//        }
-
-//        for (GoalAndDeadline item: listOfGoalAndDeadline) {
-//            Log.d("goaltime", "in hours " + item.getEstimatedHours() + " days " + item.getDeadline());
-//        }
-
-//        for (DayAndTimeAvailable item: listOfAvailableTime) {
-//            Log.d("intime", item.getDay() + " --- " + item.getTimeAvailable());
-//        }
+        return availableMinutes;
     }
 
     public void createDaysWithTask() {
