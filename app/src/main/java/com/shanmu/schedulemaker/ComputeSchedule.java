@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.shanmu.schedulemaker.models.DateWithTask;
 import com.shanmu.schedulemaker.models.DayAndTimeAvailable;
 import com.shanmu.schedulemaker.models.DayAndTimeSlot;
 import com.shanmu.schedulemaker.models.DayWithTask;
 import com.shanmu.schedulemaker.models.GoalAndDeadline;
+import com.shanmu.schedulemaker.models.ScheduleWithTasks;
+import com.shanmu.schedulemaker.models.TaskPerTimeSlot;
+import com.shanmu.schedulemaker.models.TimeSlot;
 import com.shanmu.schedulemaker.utils.DateUtils;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +39,10 @@ public class ComputeSchedule extends AppCompatActivity {
     ArrayList<DayAndTimeAvailable> listOfAvailableTime;
     ArrayList<DayWithTask> listOfDayWithTask;
     ArrayList<GoalAndDeadline> timeSlotAddedGoalAndDealine;
+    ArrayList<DateWithTask> listOfDateWithTask;
+    ArrayList<ScheduleWithTasks> listOfScheduleWithTasks;
+    GoalAndDeadline currentTargetedGoalAndDeadline = null;
+    Integer goalTimeRemaining = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,9 @@ public class ComputeSchedule extends AppCompatActivity {
         listOfDayAndTimeSlot = this.getIntent().getParcelableArrayListExtra("listOfDayAndTimeSlot");
         listOfAvailableTime = new ArrayList<>();
         listOfDayWithTask = new ArrayList<>();
+        timeSlotAddedGoalAndDealine = new ArrayList<>();
+        listOfDateWithTask = new ArrayList<>();
+        listOfScheduleWithTasks = new ArrayList<>();
 
         for (DayAndTimeSlot item: listOfDayAndTimeSlot) {
             String timeSlot = item.getTimeslot();
@@ -74,32 +87,120 @@ public class ComputeSchedule extends AppCompatActivity {
             moveToErrorDisplay.putExtra("time-provided", String.valueOf(totalTimeAvailable) + "minutes");
             moveToErrorDisplay.putExtra("difference", String.valueOf(totalTimeRequired.intValue() - totalTimeAvailable.intValue()) + " minutes");
             startActivity(moveToErrorDisplay);
+        } else {
+            createTaskSlots();
         }
 
     }
 
     public void createTaskSlots() {
 
-        for (DayWithTask item: listOfDayWithTask) {
-            GoalAndDeadline currentTargetedGoalAndDeadline;
+        List<DateWithTask> dateWithTasks = generateGeneralDateWithTasks();
+        targetCurrentGoal();
+        ArrayList<TaskPerTimeSlot> listOfTasksPerSlot = new ArrayList<>();
 
-            for (int i = 0; i < listOfGoalAndDeadline.size(); i++) {
-                if (!timeSlotAddedGoalAndDealine.contains(listOfGoalAndDeadline.get(i))) {
-                    currentTargetedGoalAndDeadline = listOfGoalAndDeadline.get(i);
-                    break;
+        for (DateWithTask item: dateWithTasks) {
+
+            if (currentTargetedGoalAndDeadline != null) {
+                for (TimeSlot timeSlot: item.getTimeSlots()) {
+                    if (goalTimeRemaining > 0) {
+                        TaskPerTimeSlot taskPerTimeSlot = new TaskPerTimeSlot();
+                        taskPerTimeSlot.setGoal(currentTargetedGoalAndDeadline.getGoal());
+                        taskPerTimeSlot.setTimeSlot(timeSlot);
+                        listOfTasksPerSlot.add(taskPerTimeSlot);
+                    } else {
+                        targetCurrentGoal();
+                    }
                 }
+                ScheduleWithTasks scheduleWithTasks = new ScheduleWithTasks(item.getDate(), listOfTasksPerSlot);
+                listOfScheduleWithTasks.add(scheduleWithTasks);
             }
+        }
 
-            DayAndTimeSlot dayAndTimeSlot;
+        for (ScheduleWithTasks item: listOfScheduleWithTasks) {
+            for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
+                Log.d("finalschedule", item.getDate() + taskPerTimeSlot.getGoal() + taskPerTimeSlot.getTimeSlot().getFrom() + " - " + taskPerTimeSlot.getTimeSlot().getTo());
+            }
+        }
+
+    }
+
+    public void targetCurrentGoal() {
+        for (int i = 0; i < listOfGoalAndDeadline.size(); i++) {
+            if (!timeSlotAddedGoalAndDealine.contains(listOfGoalAndDeadline.get(i))) {
+                currentTargetedGoalAndDeadline = listOfGoalAndDeadline.get(i);
+                goalTimeRemaining = currentTargetedGoalAndDeadline.getEstimatedHours() * 60;
+                break;
+            }
+        }
+    }
+
+    public List<DateWithTask> generateGeneralDateWithTasks() {
+        for (DayWithTask item: listOfDayWithTask) {
+
+
+            DayAndTimeSlot dayAndTimeSlot = null;
             for (DayAndTimeSlot dtSlot: listOfDayAndTimeSlot) {
                 if (dtSlot.getDay().equals(item.getDay())) {
                     dayAndTimeSlot = dtSlot;
                 }
             }
 
-            //TODO from here
+            if (dayAndTimeSlot != null) {
+                List<TimeSlot> generatedTimeSlotForDate = generateTimeSlots(dayAndTimeSlot.getTimeslot());
+                DateWithTask dateWithTask = new DateWithTask(item.getDate(), generatedTimeSlotForDate);
+                listOfDateWithTask.add(dateWithTask);
+            }
+        }
+
+        return listOfDateWithTask;
+    }
+
+    public List<TimeSlot> generateTimeSlots(String timeslot) {
+
+        ArrayList<TimeSlot> generatedTimeSlots = new ArrayList<>();
+
+        Integer fromTime = Integer.parseInt(timeslot.split("-")[0]);
+        Integer toTime = Integer.parseInt(timeslot.split("-")[1]);
+
+        Integer timeOfGap = toTime - fromTime;
+        Boolean isTimeAvailable = timeOfGap > 100; // Greater than 1 hour
+
+        Integer newFromTime = fromTime - 100;
+        Integer newToTime = toTime;
+
+        while(isTimeAvailable) {
+             newFromTime += 100;
+             newToTime = newFromTime + 100;
+             if (newToTime > toTime) {
+                 break;
+             }
+             isTimeAvailable = newToTime - newFromTime > 0;
+
+             String newFromTimeInStr = String.valueOf(newFromTime);
+             String newToTimeInStr = String.valueOf(newToTime);
+
+             if (newFromTime < 1000) {
+                 newFromTimeInStr = "0" + newFromTimeInStr;
+                 if (newFromTime < 100) {
+                     newFromTimeInStr = "0" + newFromTimeInStr;
+                 }
+             }
+
+             if (newToTime < 1000) {
+                 newToTimeInStr = "0" + newToTimeInStr;
+                 if (newToTime < 100) {
+                     newFromTimeInStr = "0" + newFromTimeInStr;
+                 }
+             }
+
+             TimeSlot slot = new TimeSlot(newFromTimeInStr, newToTimeInStr);
+             generatedTimeSlots.add(slot);
 
         }
+
+        return generatedTimeSlots;
+
     }
 
 

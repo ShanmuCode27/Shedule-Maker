@@ -2,14 +2,14 @@ package com.shanmu.schedulemaker.models;
 
 import java.util.List;
 
-public class ScheduleDateWithTimeSlots {
+public class DateWithTask {
 
     private String date;
     private List<TimeSlot> timeSlots;
 
-    public ScheduleDateWithTimeSlots(String date, List<TimeSlot> timeSlots) {
+    public DateWithTask(String date, List<TimeSlot> generatedTimeSlotForDate) {
         this.date = date;
-        this.timeSlots = timeSlots;
+        this.timeSlots = generatedTimeSlotForDate;
     }
 
     public String getDate() {
@@ -27,4 +27,5 @@ public class ScheduleDateWithTimeSlots {
     public void setTimeSlots(List<TimeSlot> timeSlots) {
         this.timeSlots = timeSlots;
     }
+
 }

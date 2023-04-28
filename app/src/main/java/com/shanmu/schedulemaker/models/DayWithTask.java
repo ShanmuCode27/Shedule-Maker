@@ -1,5 +1,8 @@
 package com.shanmu.schedulemaker.models;
 
+import java.sql.Time;
+import java.util.List;
+
 public class DayWithTask {
 
     private String day;
@@ -25,6 +28,8 @@ public class DayWithTask {
     public void setDate(String date) {
         this.date = date;
     }
+
+
 
 
 }
