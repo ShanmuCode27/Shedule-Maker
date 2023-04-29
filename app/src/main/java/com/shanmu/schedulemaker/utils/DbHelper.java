@@ -1,4 +1,4 @@
-package com.shanmu.schedulemaker;
+package com.shanmu.schedulemaker.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,6 +25,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTimeslotTable);
         db.execSQL(createDateTable);
         db.execSQL(createScheduleTable);
+        db.execSQL(createTaskTimeslotTable);
+        isDaysTableEmpty(db);
     }
 
     @Override
@@ -38,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTimeslotTable);
         db.execSQL(dropDateTable);
         db.execSQL(dropScheduleTable);
+        db.execSQL(dropTaskTimeslotTable);
     }
 
     /* user table SQL implementations */
@@ -113,6 +116,120 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
+    public void setupDaysTable(SQLiteDatabase db) {
+
+        String[] days = {"mon", "tue", "wed", "thu", "fri", "sat", "sun"};
+
+        for(String day: days) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("dayname", day);
+            db.insert("days", null, contentValues);
+        }
+
+    }
+
+    public void isDaysTableEmpty(SQLiteDatabase db) {
+
+        Cursor result = db.rawQuery("SELECT count(*) FROM days",null);
+        result.moveToFirst();
+        int count = result.getInt(0);
+        if (!(count > 0)) {
+            setupDaysTable(db);
+        }
+    }
+
+    public void insertDateIntoDateTable(String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date", date);
+
+        db.insert("date", null, contentValues);
+    }
+
+    public void insertTimeSlotIntoTimeSlotTable(String from, String to) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("start_time", from);
+        contentValues.put("end_time", to);
+
+        db.insert("timeslot", null, contentValues);
+    }
+
+    public void insertGoalIntoGoalTable(String name, String from, String to) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("start_date", from);
+        contentValues.put("end_date", to);
+
+        db.insert("goal", null, contentValues);
+    }
+
+    public void insertScheduleIntoScheduleTable(Integer dateId, Integer goalId, Integer timeslotId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date_id", dateId);
+        contentValues.put("goal_id", goalId);
+        contentValues.put("timeslot_id", timeslotId);
+
+        db.insert("schedule", null, contentValues);
+    }
+
+    public void insertIntoTaskTimeslotTable(String goal, String from, String to) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("goal", goal);
+        contentValues.put("start_time", from);
+        contentValues.put("end_time", to);
+
+        db.insert("task_timeslot", null, contentValues);
+    }
+
+    public Integer getDateIdfromDate(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM date WHERE date = " + date, null);
+
+        if (cursor.moveToFirst()) {
+            Log.d("cursor", cursor.getString(0) + " --- " + cursor.getString(1));
+            Log.d("cursor row check ", String.valueOf(cursor.getLong(cursor.getColumnIndexOrThrow("id"))));
+            return Integer.parseInt(cursor.getString(0));
+        }
+
+        return null;
+    }
+
+    public Integer getGoalIdFromGoalName(String goal) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM goal WHERE name = '" + goal + "'", null);
+
+        if (cursor.moveToFirst()) {
+            return Integer.parseInt(cursor.getString(0));
+        }
+
+        return null;
+    }
+
+    public Integer getTimeslotIdfromTimeSlot(String startTime, String endTime) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("notnullstartandendtime", startTime + " =====  " + endTime);
+        Cursor cursor = db.rawQuery("SELECT * FROM task_timeslot WHERE start_time = '" + startTime + "' AND end_time = '" + endTime + "'", null);
+
+        if (cursor.moveToFirst()) {
+            Log.d("notnull", "timeslot id " + Integer.parseInt(cursor.getString(0)));
+            return Integer.parseInt(cursor.getString(0));
+        }
+        Log.d("notnull", " is null");
+        return null;
+    }
+
+    public Cursor grabAllDataFromSchedule() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("schedule", null, null, null, null, null, null);
+        return cursor;
+    }
+
+
     // table creation and drop script declarations
 
     private final static String createUsertable = "CREATE TABLE user(" +
@@ -170,6 +287,15 @@ public class DbHelper extends SQLiteOpenHelper {
             "end_time TEXT" +
             ")";
     private final static String dropTimeslotTable = "DROP TABLE IF EXISTS timeslot";
+
+    private final static String createTaskTimeslotTable = "CREATE TABLE task_timeslot(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "goal TEXT, " +
+            "start_time TEXT," +
+            "end_time TEXT" +
+            ")";
+
+    private final static String dropTaskTimeslotTable = "DROP TABLE IF EXISTS task_timeslot";
 
     private final static String createDaySlotTable = "CREATE TABLE day_slot(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +

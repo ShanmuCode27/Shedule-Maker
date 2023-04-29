@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.shanmu.schedulemaker.utils.DbHelper;
+
 public class LoginActivity extends AppCompatActivity {
 
     DbHelper dbHelper;
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         }, 2000);
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT);
+                        Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                         Log.d("loginfailed", "login failed");
                     }
                 }

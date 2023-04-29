@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.shanmu.schedulemaker.utils.DbHelper;
 
 public class SignupActivity extends AppCompatActivity {
 

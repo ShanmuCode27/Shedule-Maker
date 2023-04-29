@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleMaker">
         <activity
+            android:name=".AllScheduleFlowViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScheduleCreatedActivity"
+            android:exported="false" />
+        <activity
             android:name=".ScheduleComputeErrorActivity"
             android:exported="false" />
         <activity

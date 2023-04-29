@@ -16,6 +16,7 @@ import com.shanmu.schedulemaker.models.ScheduleWithTasks;
 import com.shanmu.schedulemaker.models.TaskPerTimeSlot;
 import com.shanmu.schedulemaker.models.TimeSlot;
 import com.shanmu.schedulemaker.utils.DateUtils;
+import com.shanmu.schedulemaker.utils.DbHelper;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -34,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ComputeSchedule extends AppCompatActivity {
 
+    DbHelper dbHelper;
+
     ArrayList<GoalAndDeadline> listOfGoalAndDeadline;
     ArrayList<DayAndTimeSlot> listOfDayAndTimeSlot;
     ArrayList<DayAndTimeAvailable> listOfAvailableTime;
@@ -48,6 +51,8 @@ public class ComputeSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compute_schedule);
+
+        dbHelper = new DbHelper(this);
 
         listOfGoalAndDeadline = this.getIntent().getParcelableArrayListExtra("listOfGoalAndDeadline");
         listOfDayAndTimeSlot = this.getIntent().getParcelableArrayListExtra("listOfDayAndTimeSlot");
@@ -117,11 +122,51 @@ public class ComputeSchedule extends AppCompatActivity {
             }
         }
 
+        //ASSUMING THE SCHEDULE MAKING IS PERFECT
+
+        for (DateWithTask dateWithTask: listOfDateWithTask) {
+            dbHelper.insertDateIntoDateTable(dateWithTask.getDate());
+        }
+
+        for (DayAndTimeSlot timeSlot: listOfDayAndTimeSlot) {
+            String from = timeSlot.getTimeslot().split("-")[0];
+            String to = timeSlot.getTimeslot().split("-")[1];
+
+            dbHelper.insertTimeSlotIntoTimeSlotTable(from, to);
+        }
+
+
+
+        for (GoalAndDeadline goalAndDeadline: listOfGoalAndDeadline) {
+            String fromDate = DateUtils.convertStringDateToIntDate(DateUtils.getTodaysDate());
+            String toDate = goalAndDeadline.getDeadline();
+            String goalName = goalAndDeadline.getGoal();
+
+            dbHelper.insertGoalIntoGoalTable(goalName, fromDate, toDate);
+        }
+
+
+        for (ScheduleWithTasks item: listOfScheduleWithTasks) {
+            for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
+               dbHelper.insertIntoTaskTimeslotTable(taskPerTimeSlot.getGoal(), taskPerTimeSlot.getTimeSlot().getFrom(), taskPerTimeSlot.getTimeSlot().getTo());
+            }
+
+        }
+
+
         for (ScheduleWithTasks item: listOfScheduleWithTasks) {
             for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
                 Log.d("finalschedule", item.getDate() + taskPerTimeSlot.getGoal() + taskPerTimeSlot.getTimeSlot().getFrom() + " - " + taskPerTimeSlot.getTimeSlot().getTo());
+                Integer dateId = dbHelper.getDateIdfromDate(item.getDate());
+                Integer goalId = dbHelper.getGoalIdFromGoalName(taskPerTimeSlot.getGoal());
+                Integer timeslotId = dbHelper.getTimeslotIdfromTimeSlot(taskPerTimeSlot.getTimeSlot().getFrom(), taskPerTimeSlot.getTimeSlot().getTo());
+
+                dbHelper.insertScheduleIntoScheduleTable(dateId, goalId, timeslotId);
             }
+
         }
+
+        startActivity(new Intent(getApplicationContext(), ScheduleCreatedActivity.class));
 
     }
 
