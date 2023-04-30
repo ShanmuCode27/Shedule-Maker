@@ -166,7 +166,13 @@ public class ComputeSchedule extends AppCompatActivity {
 
         }
 
-        startActivity(new Intent(getApplicationContext(), ScheduleCreatedActivity.class));
+        new Handler().postDelayed(new Runnable() {
+
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), ScheduleCreatedActivity.class));
+            }
+        }, 1000);
+
 
     }
 

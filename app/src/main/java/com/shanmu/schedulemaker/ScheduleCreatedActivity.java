@@ -18,6 +18,8 @@ public class ScheduleCreatedActivity extends AppCompatActivity {
 
         checkCalendarBtn = findViewById(R.id.schedule_created_check_calendar_btn);
         scheduleViewBtn = (Button) findViewById(R.id.schedule_created_shedule_view_btn);
+
+        moveToScheduleView();
     }
 
     public void moveToScheduleView() {

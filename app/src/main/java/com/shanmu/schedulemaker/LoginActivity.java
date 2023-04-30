@@ -3,6 +3,7 @@ package com.shanmu.schedulemaker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -53,7 +54,16 @@ public class LoginActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
 
                             public void run() {
-                                startActivity(new Intent(getApplicationContext(), GetLocations.class));
+
+                                Cursor cursor = dbHelper.grabAllDataFromSchedule();
+                                if (cursor.moveToFirst()) {
+                                    cursor.close();
+                                    startActivity(new Intent(getApplicationContext(), AllScheduleFlowViewActivity.class));
+                                } else {
+                                    cursor.close();
+                                    startActivity(new Intent(getApplicationContext(), GetLocations.class));
+                                }
+
                             }
                         }, 2000);
 

@@ -111,7 +111,7 @@
         android:layout_marginStart="99dp"
         android:layout_marginTop="11dp"
         android:layout_marginEnd="102dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="40dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/signup_submit_btn"
@@ -123,10 +123,10 @@
         android:id="@+id/signup_submit_btn"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="39dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signp_password_input" />
 

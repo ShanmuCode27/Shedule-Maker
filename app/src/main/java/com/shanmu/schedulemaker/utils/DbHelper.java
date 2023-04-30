@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.shanmu.schedulemaker.models.TimeSlot;
+
 public class DbHelper extends SQLiteOpenHelper {
 
 
@@ -73,19 +75,10 @@ public class DbHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public String retrieveUser() {
+    public Cursor retrieveUser() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("select username from user where id = " + 1, null);
-
-        if (result.moveToFirst()) {
-            String username = result.getString(0);
-            result.close();
-            db.close();
-            return username;
-        } else {
-            db.close();
-            return null;
-        }
+        Cursor cursor = db.rawQuery("select * from user where id = 1", null);
+        return cursor;
     }
 
 
@@ -105,7 +98,7 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put("country", country);
         contentValues.put("address", address);
 
-        long result = db.insert("userLocations", null, contentValues);
+        long result = db.insert("user_locations", null, contentValues);
         if (result == -1) {
             db.close();
             return false;
@@ -114,6 +107,12 @@ public class DbHelper extends SQLiteOpenHelper {
             return true;
         }
 
+    }
+
+    public Cursor getUserLocation() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM user_locations WHERE user_id = 1", null);
+        return cursor;
     }
 
     public void setupDaysTable(SQLiteDatabase db) {
@@ -212,14 +211,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public Integer getTimeslotIdfromTimeSlot(String startTime, String endTime) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Log.d("notnullstartandendtime", startTime + " =====  " + endTime);
         Cursor cursor = db.rawQuery("SELECT * FROM task_timeslot WHERE start_time = '" + startTime + "' AND end_time = '" + endTime + "'", null);
 
         if (cursor.moveToFirst()) {
-            Log.d("notnull", "timeslot id " + Integer.parseInt(cursor.getString(0)));
             return Integer.parseInt(cursor.getString(0));
         }
-        Log.d("notnull", " is null");
         return null;
     }
 
@@ -228,6 +224,47 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query("schedule", null, null, null, null, null, null);
         return cursor;
     }
+
+    public Cursor grabAllDataFromProgress() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("goal", null, null, null, null, null, null);
+        return cursor;
+    }
+
+    public String getDateFromScheduleInDateTable(Integer dateId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM date WHERE id = " + dateId, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getString(1);
+        }
+        return null;
+    }
+
+
+    public String getGoalFromScheduleInGoalTable(Integer goalId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM goal WHERE id = " + goalId, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getString(1);
+        }
+        return null;
+    }
+
+
+    public TimeSlot getTimeslotFromScheduleTaskTimeslotTable(Integer taskTimeslotId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM task_timeslot WHERE id = " + taskTimeslotId, null);
+
+        if (cursor.moveToFirst()) {
+            TimeSlot timeSlot = new TimeSlot(cursor.getString(2), cursor.getString(3));
+            return timeSlot;
+        }
+        return null;
+    }
+
+
 
 
     // table creation and drop script declarations
@@ -240,7 +277,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private final static String dropUserTable = "DROP TABLE IF EXISTS user";
 
 
-    private final static String createUserLocationTable = "CREATE TABLE userLocations(" +
+    private final static String createUserLocationTable = "CREATE TABLE user_locations(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " user_id INTEGER," +
             "latitude REAL ," +
@@ -248,12 +285,12 @@ public class DbHelper extends SQLiteOpenHelper {
             "country TEXT, " +
             "address TEXT," +
             "FOREIGN KEY(user_id) REFERENCES user(id))";
-    private final static String dropUserLocationTable = "DROP TABLE IF EXISTS userLocatioons";
+    private final static String dropUserLocationTable = "DROP TABLE IF EXISTS user_locations";
 
     private final static String createGoaltable = "CREATE TABLE goal(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "name TEXT," +
-            "progress REAL," +
+            "progress REAL DEFAULT 0.0," +
             "start_date DATE," +
             "end_date DATE" +
             ")";
