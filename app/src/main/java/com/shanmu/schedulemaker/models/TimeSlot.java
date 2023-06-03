@@ -25,4 +25,9 @@ public class TimeSlot {
     public void setTo(String to) {
         this.to = to;
     }
+
+    @Override
+    public String toString() {
+        return "from : " + this.from + " to: " + this.to;
+    }
 }

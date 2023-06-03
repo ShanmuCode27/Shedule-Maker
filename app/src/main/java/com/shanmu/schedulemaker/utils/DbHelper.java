@@ -264,6 +264,26 @@ public class DbHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public void deleteAllScheduleData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL(dropGoalTable);
+        db.execSQL(dropSuccessGoalTable);
+        db.execSQL(dropFailureGoalTable);
+        db.execSQL(dropTimeslotTable);
+        db.execSQL(dropDateTable);
+        db.execSQL(dropScheduleTable);
+        db.execSQL(dropTaskTimeslotTable);
+
+        db.execSQL(createGoaltable);
+        db.execSQL(createSuccessGoaltable);
+        db.execSQL(createFailureGoaltable);
+        db.execSQL(createTimeslotTable);
+        db.execSQL(createDateTable);
+        db.execSQL(createScheduleTable);
+        db.execSQL(createTaskTimeslotTable);
+    }
+
 
 
 

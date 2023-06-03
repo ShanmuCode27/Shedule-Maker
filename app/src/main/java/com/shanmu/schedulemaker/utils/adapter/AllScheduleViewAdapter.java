@@ -1,5 +1,7 @@
 package com.shanmu.schedulemaker.utils.adapter;
 
+import static com.shanmu.schedulemaker.utils.DateUtils.convertIntDateToDisplayFormat;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,7 @@ public class AllScheduleViewAdapter extends ArrayAdapter<DateTimeslotAndGoal> {
         TextView dateText = convertView.findViewById(R.id.schedule_item_card_date);
         TextView timeslotText = convertView.findViewById(R.id.schedule_item_card_timeslot);
         TextView goalText = convertView.findViewById(R.id.schedule_item_card_goalname);
-        dateText.setText(dateTimeslotAndGoal.getDate());
+        dateText.setText(convertIntDateToDisplayFormat(dateTimeslotAndGoal.getDate()));
         timeslotText.setText(dateTimeslotAndGoal.getTimeslotDisplay());
         goalText.setText(dateTimeslotAndGoal.getGoalName());
 

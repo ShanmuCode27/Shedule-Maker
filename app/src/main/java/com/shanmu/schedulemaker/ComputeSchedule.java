@@ -113,10 +113,11 @@ public class ComputeSchedule extends AppCompatActivity {
                         taskPerTimeSlot.setGoal(currentTargetedGoalAndDeadline.getGoal());
                         taskPerTimeSlot.setTimeSlot(timeSlot);
                         listOfTasksPerSlot.add(taskPerTimeSlot);
-                    } else {
-                        targetCurrentGoal();
+                        decrementCurrentGoal(timeSlot);
+                        Log.d("howschedule", item.getDate() + currentTargetedGoalAndDeadline.getGoal() + " from " + timeSlot.getFrom() + " to " + timeSlot.getTo());
                     }
                 }
+                Log.d("date is ", item.getDate());
                 ScheduleWithTasks scheduleWithTasks = new ScheduleWithTasks(item.getDate(), listOfTasksPerSlot);
                 listOfScheduleWithTasks.add(scheduleWithTasks);
             }
@@ -148,9 +149,9 @@ public class ComputeSchedule extends AppCompatActivity {
 
         for (ScheduleWithTasks item: listOfScheduleWithTasks) {
             for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
+                Log.d("loopschedule", item.getDate() + taskPerTimeSlot.getGoal() + taskPerTimeSlot.getTimeSlot());
                dbHelper.insertIntoTaskTimeslotTable(taskPerTimeSlot.getGoal(), taskPerTimeSlot.getTimeSlot().getFrom(), taskPerTimeSlot.getTimeSlot().getTo());
             }
-
         }
 
 
@@ -186,10 +187,17 @@ public class ComputeSchedule extends AppCompatActivity {
         }
     }
 
+    public void decrementCurrentGoal(TimeSlot timeSlot) {
+        Long timeGap = DateUtils.getDifferenceBetweenTwoTimes(timeSlot.getFrom(), timeSlot.getTo());
+        goalTimeRemaining = goalTimeRemaining - Long.valueOf(timeGap).intValue();
+        if (goalTimeRemaining < 1) {
+            timeSlotAddedGoalAndDealine.add(currentTargetedGoalAndDeadline);
+            targetCurrentGoal();
+        }
+    }
+
     public List<DateWithTask> generateGeneralDateWithTasks() {
         for (DayWithTask item: listOfDayWithTask) {
-
-
             DayAndTimeSlot dayAndTimeSlot = null;
             for (DayAndTimeSlot dtSlot: listOfDayAndTimeSlot) {
                 if (dtSlot.getDay().equals(item.getDay())) {
@@ -202,6 +210,10 @@ public class ComputeSchedule extends AppCompatActivity {
                 DateWithTask dateWithTask = new DateWithTask(item.getDate(), generatedTimeSlotForDate);
                 listOfDateWithTask.add(dateWithTask);
             }
+        }
+
+        for (DateWithTask item: listOfDateWithTask) {
+            Log.d("listOfDateWithTask", item.getDate() + " timelsots " + item.getTimeSlots());
         }
 
         return listOfDateWithTask;

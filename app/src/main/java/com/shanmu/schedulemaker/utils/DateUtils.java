@@ -26,6 +26,9 @@ public class DateUtils {
         String month = date.substring(0, 4);
         String year = date.substring(date.length() - 4);
         String day = date.substring(4, date.length() - 4).trim();
+        if (Integer.parseInt(day) < 10) {
+            day += "0" + day;
+        }
         String combinedDate = year.trim() + getMonthNumberFromString(month.trim()) + day.trim();
         return combinedDate;
     }
@@ -229,6 +232,30 @@ public class DateUtils {
         }
 
         return day;
+    }
+
+    public static String convertIntDateToDisplayFormat(String date) {
+        String day = date.substring(date.length() - 2);
+        String dayPostFix = "th";
+        switch (Integer.parseInt(day) % 10) {
+            case 1:
+                dayPostFix = "st";
+                break;
+            case 2:
+                dayPostFix = "nd";
+                break;
+            case 3:
+                dayPostFix = "rd";
+                break;
+            default:
+                dayPostFix = "th";
+        }
+
+        String month = getMonthFormat(Integer.parseInt(date.substring(4, 6)));
+        String year = date.substring(0, 4);
+
+        return day + dayPostFix + " " + month + " " + year;
+
     }
 
 }

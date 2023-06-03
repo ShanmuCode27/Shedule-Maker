@@ -24,14 +24,12 @@
 
         <TextView
             android:id="@+id/schedule_item_card_timeslot"
-            android:text="test"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="60dp"
-            android:padding="10dp"
-            android:background="#D9D9D9"
             android:color="#000000"
-            >
+            android:padding="10dp"
+            android:text="test">
 
         </TextView>
 
