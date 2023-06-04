@@ -160,8 +160,42 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put("name", name);
         contentValues.put("start_date", from);
         contentValues.put("end_date", to);
+        contentValues.put("slots_covered", 0);
 
         db.insert("goal", null, contentValues);
+    }
+
+    public void insertSlotCountIntoGoalTable(int slotsCount, String goalName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("slots_count", slotsCount);
+
+        db.update("goal", contentValues, "name=?", new String[]{goalName});
+        db.close();
+    }
+
+    public void insertCoveredCountIntoGoalTable(int slotsCount, String goalName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("slots_covered", slotsCount);
+
+        db.update("goal", contentValues, "name=?", new String[]{goalName});
+        db.close();
+    }
+
+    public void insertProgressIntoGoalTable(double progress, String goalName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("progress", progress);
+
+        db.update("goal", contentValues, "name=?", new String[]{goalName});
+        db.close();
+    }
+
+    public Cursor retrieveCoveredAndSlotCountFromGoalTable(String goalName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT slots_count, slots_covered FROM goal", null);
+        return cursor;
     }
 
     public void insertScheduleIntoScheduleTable(Integer dateId, Integer goalId, Integer timeslotId) {
@@ -312,7 +346,9 @@ public class DbHelper extends SQLiteOpenHelper {
             "name TEXT," +
             "progress REAL DEFAULT 0.0," +
             "start_date DATE," +
-            "end_date DATE" +
+            "end_date DATE," +
+            "slots_count INTEGER," +
+            "slots_covered INTEGER" +
             ")";
     private final static String dropGoalTable = "DROP TABLE IF EXISTS goal";
 

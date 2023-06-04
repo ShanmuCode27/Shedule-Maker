@@ -3,7 +3,9 @@ package com.shanmu.schedulemaker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +13,17 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.shanmu.schedulemaker.utils.DbHelper;
 
 public class MarkGoalProgressActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     TextView goalName, goalTime;
     Button doneBtn;
     CheckBox didBox, didNotBox;
+
+    DbHelper dbHelper;
+    String goal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +39,9 @@ public class MarkGoalProgressActivity extends AppCompatActivity {
         didNotBox = findViewById(R.id.mark_progress_checkbox_did_not);
         doneBtn = findViewById(R.id.mark_progress_done);
 
-        String goal = getIntent().getStringExtra("goal");
+        dbHelper = new DbHelper(this);
+
+        goal = getIntent().getStringExtra("goal");
         String timeDisplay = getIntent().getStringExtra("timeSlot");
 
         goalName.setText(goal);
@@ -45,7 +54,17 @@ public class MarkGoalProgressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (didBox.isChecked()) {
-                    // add progress
+                    Cursor cursor = dbHelper.retrieveCoveredAndSlotCountFromGoalTable(goal);
+
+                    if (cursor.moveToFirst()) {
+                        Log.d("covered", cursor.getString(0) + " ; " + cursor.getString(1));
+                        int slotsCount = Integer.parseInt(cursor.getString(0));
+                        int slotsCovered = Integer.parseInt(cursor.getString(1));
+
+                        double progress = slotsCovered + 1 / slotsCount;
+                        dbHelper.insertCoveredCountIntoGoalTable(slotsCovered + 1, goal);
+                        dbHelper.insertProgressIntoGoalTable(progress, goal);
+                    }
                 }
 
                 startActivity(new Intent(getApplicationContext(), AllScheduleFlowViewActivity.class));

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,6 +17,7 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     DbHelper dbHelper;
     TextView usernameText, roleText, countryText, addressText;
+    Button logoutBtn;
     BottomNavigationView bottomNavigationView;
 
 
@@ -51,6 +54,21 @@ public class ProfileViewActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationHandler();
+        logoutBtn = findViewById(R.id.app_logout_btn);
+        logout();
+    }
+
+    public void logout() {
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Deprecated
@@ -65,10 +83,10 @@ public class ProfileViewActivity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.progress:
+                        startActivity(new Intent(getApplicationContext(), ProgressViewActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(), ProfileViewActivity.class));
-                        overridePendingTransition(0, 0);
                         return true;
                 }
 

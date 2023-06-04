@@ -11,6 +11,7 @@ import com.shanmu.schedulemaker.models.DateWithTask;
 import com.shanmu.schedulemaker.models.DayAndTimeAvailable;
 import com.shanmu.schedulemaker.models.DayAndTimeSlot;
 import com.shanmu.schedulemaker.models.DayWithTask;
+import com.shanmu.schedulemaker.models.GoalAndCountOfSlots;
 import com.shanmu.schedulemaker.models.GoalAndDeadline;
 import com.shanmu.schedulemaker.models.ScheduleWithTasks;
 import com.shanmu.schedulemaker.models.TaskPerTimeSlot;
@@ -60,7 +61,6 @@ public class ComputeSchedule extends AppCompatActivity {
         listOfDayWithTask = new ArrayList<>();
         timeSlotAddedGoalAndDealine = new ArrayList<>();
         listOfDateWithTask = new ArrayList<>();
-        listOfScheduleWithTasks = new ArrayList<>();
 
         for (DayAndTimeSlot item: listOfDayAndTimeSlot) {
             String timeSlot = item.getTimeslot();
@@ -102,11 +102,13 @@ public class ComputeSchedule extends AppCompatActivity {
 
         List<DateWithTask> dateWithTasks = generateGeneralDateWithTasks();
         targetCurrentGoal();
-        ArrayList<TaskPerTimeSlot> listOfTasksPerSlot = new ArrayList<>();
+        listOfScheduleWithTasks = new ArrayList<>();
 
         for (DateWithTask item: dateWithTasks) {
 
             if (currentTargetedGoalAndDeadline != null) {
+                ArrayList<TaskPerTimeSlot> listOfTasksPerSlot = new ArrayList<>();
+
                 for (TimeSlot timeSlot: item.getTimeSlots()) {
                     if (goalTimeRemaining > 0) {
                         TaskPerTimeSlot taskPerTimeSlot = new TaskPerTimeSlot();
@@ -114,10 +116,8 @@ public class ComputeSchedule extends AppCompatActivity {
                         taskPerTimeSlot.setTimeSlot(timeSlot);
                         listOfTasksPerSlot.add(taskPerTimeSlot);
                         decrementCurrentGoal(timeSlot);
-                        Log.d("howschedule", item.getDate() + currentTargetedGoalAndDeadline.getGoal() + " from " + timeSlot.getFrom() + " to " + timeSlot.getTo());
                     }
                 }
-                Log.d("date is ", item.getDate());
                 ScheduleWithTasks scheduleWithTasks = new ScheduleWithTasks(item.getDate(), listOfTasksPerSlot);
                 listOfScheduleWithTasks.add(scheduleWithTasks);
             }
@@ -149,7 +149,6 @@ public class ComputeSchedule extends AppCompatActivity {
 
         for (ScheduleWithTasks item: listOfScheduleWithTasks) {
             for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
-                Log.d("loopschedule", item.getDate() + taskPerTimeSlot.getGoal() + taskPerTimeSlot.getTimeSlot());
                dbHelper.insertIntoTaskTimeslotTable(taskPerTimeSlot.getGoal(), taskPerTimeSlot.getTimeSlot().getFrom(), taskPerTimeSlot.getTimeSlot().getTo());
             }
         }
@@ -157,7 +156,6 @@ public class ComputeSchedule extends AppCompatActivity {
 
         for (ScheduleWithTasks item: listOfScheduleWithTasks) {
             for (TaskPerTimeSlot taskPerTimeSlot: item.getListOfTaskPerTimeSlot()) {
-                Log.d("finalschedule", item.getDate() + taskPerTimeSlot.getGoal() + taskPerTimeSlot.getTimeSlot().getFrom() + " - " + taskPerTimeSlot.getTimeSlot().getTo());
                 Integer dateId = dbHelper.getDateIdfromDate(item.getDate());
                 Integer goalId = dbHelper.getGoalIdFromGoalName(taskPerTimeSlot.getGoal());
                 Integer timeslotId = dbHelper.getTimeslotIdfromTimeSlot(taskPerTimeSlot.getTimeSlot().getFrom(), taskPerTimeSlot.getTimeSlot().getTo());
@@ -166,6 +164,8 @@ public class ComputeSchedule extends AppCompatActivity {
             }
 
         }
+
+        calculateSlotsPerGoal();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -184,6 +184,28 @@ public class ComputeSchedule extends AppCompatActivity {
                 goalTimeRemaining = currentTargetedGoalAndDeadline.getEstimatedHours() * 60;
                 break;
             }
+        }
+    }
+
+    public void calculateSlotsPerGoal() {
+        List<GoalAndCountOfSlots> listOfGoalAndCountOfSlots = new ArrayList<>();
+        for (GoalAndDeadline goalAndDeadline: listOfGoalAndDeadline) {
+            int count = 0;
+            for (ScheduleWithTasks scheduleWithTasks: listOfScheduleWithTasks) {
+                for (TaskPerTimeSlot taskPerTimeSlot: scheduleWithTasks.getListOfTaskPerTimeSlot()) {
+                    if (taskPerTimeSlot.getGoal() == goalAndDeadline.getGoal()) {
+                        count++;
+                    }
+                }
+            }
+            GoalAndCountOfSlots goalAndCountOfSlots = new GoalAndCountOfSlots();
+            goalAndCountOfSlots.setGoal(goalAndDeadline.getGoal());
+            goalAndCountOfSlots.setCountOfTimeSlots(count);
+            listOfGoalAndCountOfSlots.add(goalAndCountOfSlots);
+        }
+
+        for (GoalAndCountOfSlots goalAndCountOfSlots: listOfGoalAndCountOfSlots) {
+            dbHelper.insertSlotCountIntoGoalTable(goalAndCountOfSlots.getCountOfTimeSlots(), goalAndCountOfSlots.getGoal());
         }
     }
 

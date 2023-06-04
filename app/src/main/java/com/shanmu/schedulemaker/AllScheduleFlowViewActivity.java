@@ -156,7 +156,7 @@ public class AllScheduleFlowViewActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.O)
             @Override
             public void run() {
-                // check for notification of new activity
+                // check for notification of recently ended task event
 
                 Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);
@@ -185,9 +185,9 @@ public class AllScheduleFlowViewActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.O)
     public void checkForPreviousTask(String currentTime, String currentDate, int count) {
         for (DateTimeslotAndGoal goal: listOfDateTimeslotAndGoal) {
-//            if (goal.getDate() == currentDate) {
+            if (goal.getDate() == currentDate) {
                 String toTime = goal.getTimeslotDisplay().substring(goal.getTimeslotDisplay().length() - 9, goal.getTimeslotDisplay().length() - 3).replace(":","");
-//                if (currentTime == toTime) {
+                if (currentTime == toTime) {
                     //Create notification
                     String CHANNEL_ID = "SHANMU_NOTIFICATION";
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
@@ -218,8 +218,8 @@ public class AllScheduleFlowViewActivity extends AppCompatActivity {
 
                     notificationManager.notify(0, builder.build());
 
-//                }
-//            }
+                }
+            }
         }
     }
 

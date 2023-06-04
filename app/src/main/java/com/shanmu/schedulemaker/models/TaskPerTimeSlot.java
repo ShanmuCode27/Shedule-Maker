@@ -5,6 +5,8 @@ public class TaskPerTimeSlot {
     private String goal;
     private TimeSlot timeSlot;
 
+    public TaskPerTimeSlot() {
+    }
 
     public String getGoal() {
         return goal;
@@ -20,6 +22,11 @@ public class TaskPerTimeSlot {
 
     public void setTimeSlot(TimeSlot timeSlot) {
         this.timeSlot = timeSlot;
+    }
+
+    @Override
+    public String toString() {
+        return goal + " time slots " + timeSlot;
     }
 
 }

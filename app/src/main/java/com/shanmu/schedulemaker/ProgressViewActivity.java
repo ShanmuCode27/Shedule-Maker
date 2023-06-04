@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,11 +36,15 @@ public class ProgressViewActivity extends AppCompatActivity {
         Cursor cursor = dbHelper.grabAllDataFromProgress();
 
         if (cursor.moveToFirst()) {
+            GoalProgress goalProgressFirst = new GoalProgress();
+            goalProgressFirst.setGoalName(cursor.getString(1));
+            goalProgressFirst.setProgress(Double.parseDouble(cursor.getString(2)) * 10);
+            listOfGoalProgress.add(goalProgressFirst);
+
             while(cursor.moveToNext()) {
                 GoalProgress goalProgress = new GoalProgress();
                 goalProgress.setGoalName(cursor.getString(1));
                 goalProgress.setProgress(Double.parseDouble(cursor.getString(2)));
-
                 listOfGoalProgress.add(goalProgress);
             }
         }
